@@ -1,6 +1,6 @@
-package com.jerrycf.BasicSpringBoot.Model.entity;
+package com.jerrycf.BasicSpringBoot.repository;
 
-import com.jerrycf.BasicSpringBoot.repository.ProductRepository;
+import com.jerrycf.BasicSpringBoot.Model.entity.Product;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
