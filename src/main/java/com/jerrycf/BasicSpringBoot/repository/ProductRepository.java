@@ -1,6 +1,6 @@
 package com.jerrycf.BasicSpringBoot.repository;
 
-import com.jerrycf.BasicSpringBoot.Model.entity.Product;
+import com.jerrycf.BasicSpringBoot.model.entity.Product;
 
 import java.util.List;
 import java.util.Optional;

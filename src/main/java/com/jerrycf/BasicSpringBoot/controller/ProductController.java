@@ -1,7 +1,7 @@
 package com.jerrycf.BasicSpringBoot.controller;
 
 
-import com.jerrycf.BasicSpringBoot.Model.entity.Product;
+import com.jerrycf.BasicSpringBoot.model.entity.Product;
 import com.jerrycf.BasicSpringBoot.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

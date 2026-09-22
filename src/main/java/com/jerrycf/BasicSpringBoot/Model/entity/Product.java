@@ -1,4 +1,4 @@
-package com.jerrycf.BasicSpringBoot.Model.entity;
+package com.jerrycf.BasicSpringBoot.model.entity;
 import lombok.*;
 
 @Getter

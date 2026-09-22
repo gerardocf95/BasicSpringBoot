@@ -1,7 +1,7 @@
 package com.jerrycf.BasicSpringBoot.service;
 
 
-import com.jerrycf.BasicSpringBoot.Model.entity.Product;
+import com.jerrycf.BasicSpringBoot.model.entity.Product;
 import com.jerrycf.BasicSpringBoot.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
