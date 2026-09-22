@@ -11,15 +11,14 @@ import java.util.concurrent.atomic.AtomicLong;
 @Repository
 public class InMemoryProductRepository implements ProductRepository {
 
-    private final AtomicLong idSequence;
+    private final AtomicLong idSequence = new AtomicLong(0);
 
     private final ConcurrentHashMap<Long, Product> productMap = new ConcurrentHashMap<>();
 
-    private InMemoryProductRepository() {
-        idSequence = new AtomicLong(0);
-        productMap.put(idSequence.get(), new Product(idSequence.getAndIncrement(), "Keyboard", 450.0));
-        productMap.put(idSequence.get(), new Product(idSequence.getAndIncrement(), "Mouse", 250.0));
-        productMap.put(idSequence.get(), new Product(idSequence.getAndIncrement(), "Monitor", 320.0));
+    public InMemoryProductRepository() {
+        save(new Product(null, "Keyboard", 450.0));
+        save(new Product(null, "Mouse", 250.0));
+        save(new Product(null, "Monitor", 3200.0));
     }
 
     @Override
@@ -34,8 +33,9 @@ public class InMemoryProductRepository implements ProductRepository {
 
     @Override
     public Product save(Product product) {
-        product.setId(idSequence.get());
-        productMap.put(idSequence.getAndIncrement(), product);
+        Long id = idSequence.incrementAndGet();
+        product.setId(id);
+        productMap.put(id, product);
         return product;
     }
 
