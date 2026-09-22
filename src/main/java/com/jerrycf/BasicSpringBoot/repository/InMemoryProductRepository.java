@@ -11,12 +11,12 @@ import java.util.concurrent.atomic.AtomicLong;
 @Repository
 public class InMemoryProductRepository implements ProductRepository {
 
-    private AtomicLong contId = new AtomicLong(0);
+    private final AtomicLong idSequence = new AtomicLong(0);
 
     private final List<Product> products = new ArrayList<>(List.of(
-            new Product(contId.incrementAndGet(), "Keyboard", 450.0),
-            new Product(contId.incrementAndGet(), "Mouse", 250.0),
-            new Product(contId.incrementAndGet(), "Monitor", 3200.0)
+            new Product(idSequence.incrementAndGet(), "Keyboard", 450.0),
+            new Product(idSequence.incrementAndGet(), "Mouse", 250.0),
+            new Product(idSequence.incrementAndGet(), "Monitor", 3200.0)
     ));
 
     @Override
@@ -31,7 +31,7 @@ public class InMemoryProductRepository implements ProductRepository {
 
     @Override
     public Product save(Product product) {
-        product.setId(contId.incrementAndGet());
+        product.setId(idSequence.incrementAndGet());
         products.add(product);
         return product;
     }

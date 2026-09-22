@@ -1,13 +1,11 @@
 package com.jerrycf.BasicSpringBoot.controller;
-
-
 import com.jerrycf.BasicSpringBoot.model.entity.Product;
 import com.jerrycf.BasicSpringBoot.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/products")
@@ -26,12 +24,13 @@ public class ProductController {
         return productService.listCheaper(limit);
     }
 
-    @GetMapping("/products/{id}")
-    public Optional<Product> findProductById(@PathVariable Long id) {
+    @GetMapping("/{id}")
+    public Product findProductById(@PathVariable Long id) {
         return productService.findById(id);
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Product save(@RequestBody Product product) {
         return productService.create(product);
     }
