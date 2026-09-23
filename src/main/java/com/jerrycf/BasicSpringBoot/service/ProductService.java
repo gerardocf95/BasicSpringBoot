@@ -19,9 +19,7 @@ public class ProductService {
     }
 
     public List<Product> listCheaper(Double limit) {
-        return productRepository.findAll().stream()
-                .filter(product -> product.getPrice() < limit)
-                .toList();
+        return productRepository.findByPriceLessThan(limit);
     }
 
     public Product findById(Long id) {
