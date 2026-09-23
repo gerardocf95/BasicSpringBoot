@@ -36,4 +36,9 @@ public class ProductController {
     }
 
 
+    @DeleteMapping("/all")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteAllProducts() {
+        productService.deleteAllProducts();
+    }
 }
