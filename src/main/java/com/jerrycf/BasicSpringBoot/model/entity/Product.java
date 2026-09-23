@@ -2,7 +2,8 @@ package com.jerrycf.BasicSpringBoot.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "products")
 @NoArgsConstructor
