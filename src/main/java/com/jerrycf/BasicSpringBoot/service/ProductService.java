@@ -1,6 +1,7 @@
 package com.jerrycf.BasicSpringBoot.service;
 
 
+import com.jerrycf.BasicSpringBoot.errors.ProductNotFoundException;
 import com.jerrycf.BasicSpringBoot.model.entity.Product;
 import com.jerrycf.BasicSpringBoot.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,8 @@ public class ProductService {
     }
 
     public Product findById(Long id) {
-        return productRepository.findById(id).orElse(null);
+        return productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(id));
     }
 
     public Product create(Product product) {
