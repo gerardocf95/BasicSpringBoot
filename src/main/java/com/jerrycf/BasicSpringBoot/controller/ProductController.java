@@ -15,6 +15,7 @@ public class ProductController {
 
     private final ProductService productService;
 
+    /*** GET ***/
     @GetMapping
     public List<Product> findAllProducts(){
         return productService.listAllProducts();
@@ -30,6 +31,7 @@ public class ProductController {
         return productService.findById(id);
     }
 
+    /*** POST ***/
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Product save(@Valid @RequestBody Product product) {
@@ -37,9 +39,17 @@ public class ProductController {
     }
 
 
+    /*** DELETE ***/
     @DeleteMapping("/all")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteAllProducts() {
         productService.deleteAllProducts();
     }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteProductById(@PathVariable Long id) {
+        productService.deleteProductById(id);
+    }
+
 }

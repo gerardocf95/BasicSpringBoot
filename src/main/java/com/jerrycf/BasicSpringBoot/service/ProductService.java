@@ -15,6 +15,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
+    /*** GET ***/
     public List<Product> listAllProducts(){
         return productRepository.findAll();
     }
@@ -28,11 +29,20 @@ public class ProductService {
                 .orElseThrow(() -> new ProductNotFoundException(id));
     }
 
+    /*** POST ***/
     public Product create(Product product) {
         return productRepository.save(product);
     }
 
+    /*** DELETE ***/
     public void deleteAllProducts() {
         productRepository.deleteAll();
+    }
+
+    public void deleteProductById(Long id) {
+        if (!productRepository.existsById(id)) {
+            throw new ProductNotFoundException(id);
+        }
+        productRepository.deleteById(id);
     }
 }
