@@ -33,7 +33,7 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST,
                 "Validation failed for one or more fields:"
         );
-        problem.setTitle("Method argument " + problem.getDetail() + " not valid");
+        problem.setTitle("Invalid method arguments");
         problem.setProperty("errors", errors);
         return problem;
     }
