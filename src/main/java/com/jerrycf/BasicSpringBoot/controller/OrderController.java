@@ -22,12 +22,12 @@ public class OrderController {
     /*** GET ***/
     @GetMapping
     public ResponseEntity<List<OrderResponse>> getOrders(){
-        return orderService.getOrders();
+        return ResponseEntity.ok(orderService.getOrders());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<OrderResponse> getOrderById(@PathVariable Long id) {
-        return orderService.getOrderById(id);
+        return ResponseEntity.ok(orderService.getOrderById(id));
     }
 
 

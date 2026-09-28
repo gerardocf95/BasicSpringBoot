@@ -1,6 +1,8 @@
 package com.jerrycf.BasicSpringBoot.model.DTOs;
 
 import jakarta.annotation.Nullable;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
@@ -13,7 +15,8 @@ public record CreateOrderRequest(
         @Nullable
         String details,
 
-        @NotNull
+        @NotEmpty
+        @Valid
         List<OrderItemRequest> orderItems
 
 ) {

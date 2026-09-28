@@ -2,7 +2,9 @@ package com.jerrycf.BasicSpringBoot.service;
 
 import com.jerrycf.BasicSpringBoot.errors.NotEnoughStockException;
 import com.jerrycf.BasicSpringBoot.errors.OrderNotFoundException;
+import com.jerrycf.BasicSpringBoot.errors.ProductNotFoundException;
 import com.jerrycf.BasicSpringBoot.model.DTOs.CreateOrderRequest;
+import com.jerrycf.BasicSpringBoot.model.DTOs.OrderItemRequest;
 import com.jerrycf.BasicSpringBoot.model.DTOs.OrderItemResponse;
 import com.jerrycf.BasicSpringBoot.model.DTOs.OrderResponse;
 import com.jerrycf.BasicSpringBoot.model.entity.Order;
@@ -15,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -27,51 +30,48 @@ public class OrderService {
     private final ProductRepository productRepository;
 
     /*** GET ***/
-    public ResponseEntity<List<OrderResponse>> getOrders(){
-        return ResponseEntity.ok(orderRepository.findAll().stream()
+    public List<OrderResponse> getOrders(){
+        return orderRepository.findAll().stream()
                 .map(OrderResponse::from)
-                .toList());
+                .toList();
     }
 
-    public ResponseEntity<OrderResponse> getOrderById(Long id) {
-        return ResponseEntity.ok(OrderResponse.from(orderRepository.findById(id)
-                .orElseThrow(() -> new OrderNotFoundException("Order with id: " + id + " not found."))));
+    public OrderResponse getOrderById(Long id) {
+        return OrderResponse.from(orderRepository.findById(id)
+                .orElseThrow(() -> new OrderNotFoundException("Order with id: " + id + " not found.")));
     }
 
     @Transactional
     public OrderResponse createOrder(CreateOrderRequest order) {
-        AtomicReference<Double> totalPrice = new AtomicReference<>(0.0);
         Order newOrder = new Order();
         newOrder.setClientId(order.clientId());
-        List<OrderItem> orderItemList = new ArrayList<>();
-        order.orderItems().forEach(item -> {
-            if (productRepository.findById(item.productId()).isPresent()) {
-                // Check quantity on stock
+        newOrder.setDetails(order.details().isEmpty() ? "No details" : order.details());
+        double totalPrice = 0.0;
+
+        for (OrderItemRequest item: order.orderItems()){
+            if (productRepository.existsById(item.productId())){
                 Product currentProduct = productRepository.findById(item.productId()).get();
-                double currentProductPrice = currentProduct.getPrice();
-
-                if (currentProduct.getStock() >= item.quantity()){
-                    // update product stock on repository
+                if (currentProduct.getStock() >= item.quantity()) {
+                    totalPrice += currentProduct.getPrice() * item.quantity();
                     currentProduct.setStock(currentProduct.getStock() - item.quantity());
-                    productRepository.save(currentProduct);
-                    totalPrice.updateAndGet(v -> v + currentProductPrice * item.quantity());
-
-                    OrderItem orderItem = new OrderItem();
-                    orderItem.setId(newOrder.getId());
-                    orderItem.setOrder(newOrder);
-                    orderItem.setProduct(currentProduct);
-                    orderItem.setQuantity(item.quantity());
-                    orderItem.setUnitPrice(currentProductPrice);
-                    orderItemList.add(orderItem);
+                    OrderItem newOrderItem = new OrderItem();
+                    newOrderItem.setOrder(newOrder);
+                    newOrderItem.setProduct(currentProduct);
+                    newOrderItem.setQuantity(item.quantity());
+                    newOrderItem.setUnitPrice(currentProduct.getPrice());
+                    newOrder.getOrderItems().add(newOrderItem);
                 } else {
                     throw new NotEnoughStockException("Not enough stock for product: " + currentProduct.getName());
                 }
+            } else {
+                throw new ProductNotFoundException(item.productId());
             }
-        });
-        newOrder.setOrderItems(orderItemList);
-        newOrder.setTotalPrice(totalPrice.get());
-        newOrder.setDetails(order.details().isEmpty() ? "No details" : order.details());
+        }
+        newOrder.setTotalPrice(totalPrice);
+        newOrder.setCreatedAt(LocalDateTime.now());
+
         return OrderResponse.from(orderRepository.save(newOrder));
+
     }
 
 
