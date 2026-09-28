@@ -5,6 +5,7 @@ import com.jerrycf.BasicSpringBoot.errors.ProductNotFoundException;
 import com.jerrycf.BasicSpringBoot.model.entity.Product;
 import com.jerrycf.BasicSpringBoot.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public class ProductService {
 
     /*** GET ***/
     public List<Product> listAllProducts(){
+
         return productRepository.findAll();
     }
 

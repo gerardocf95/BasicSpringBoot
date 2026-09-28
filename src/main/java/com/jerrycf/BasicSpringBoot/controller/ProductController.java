@@ -4,6 +4,7 @@ import com.jerrycf.BasicSpringBoot.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,39 +18,41 @@ public class ProductController {
 
     /*** GET ***/
     @GetMapping
-    public List<Product> findAllProducts(){
-        return productService.listAllProducts();
+    public ResponseEntity<List<Product>> findAllProducts(){
+        return ResponseEntity.ok(productService.listAllProducts());
     }
 
     @GetMapping("/cheap")
-    public List<Product> findProductsWithPriceLimit(@RequestParam Double limit) {
-        return productService.listCheaper(limit);
+    public ResponseEntity<List<Product>> findProductsWithPriceLimit(@RequestParam Double limit) {
+        return ResponseEntity.ok(productService.listCheaper(limit));
     }
 
     @GetMapping("/{id}")
-    public Product findProductById(@PathVariable Long id) {
-        return productService.findById(id);
+    public ResponseEntity<Product> findProductById(@PathVariable Long id) {
+        return ResponseEntity.ok(productService.findById(id));
     }
 
     /*** POST ***/
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Product save(@Valid @RequestBody Product product) {
-        return productService.create(product);
+    public ResponseEntity<Product> save(@Valid @RequestBody Product product) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(productService.create(product));
     }
 
 
     /*** DELETE ***/
     @DeleteMapping("/all")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteAllProducts() {
+    public ResponseEntity<Void> deleteAllProducts() {
         productService.deleteAllProducts();
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteProductById(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteProductById(@PathVariable Long id) {
         productService.deleteProductById(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

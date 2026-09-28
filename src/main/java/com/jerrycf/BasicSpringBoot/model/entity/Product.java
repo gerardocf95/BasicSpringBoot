@@ -3,6 +3,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 
 @Getter
@@ -22,4 +23,7 @@ public class Product {
     @NotNull(message = "Price is required")
     @Positive(message = "Price must be greater than zero")
     private Double price;
+
+    @PositiveOrZero(message = "Stock for this product must be greater or equal to zero")
+    private Integer stock;
 }
