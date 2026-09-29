@@ -6,6 +6,8 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @Entity
@@ -22,7 +24,7 @@ public class Product {
 
     @NotNull(message = "Price is required")
     @Positive(message = "Price must be greater than zero")
-    private Double price;
+    private BigDecimal price;
 
     @PositiveOrZero(message = "Stock for this product must be greater or equal to zero")
     private Integer stock;

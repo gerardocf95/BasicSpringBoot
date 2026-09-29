@@ -2,11 +2,12 @@ package com.jerrycf.BasicSpringBoot.service;
 
 
 import com.jerrycf.BasicSpringBoot.errors.ProductNotFoundException;
+import com.jerrycf.BasicSpringBoot.model.DTOs.CreateProductRequest;
 import com.jerrycf.BasicSpringBoot.model.entity.Product;
 import com.jerrycf.BasicSpringBoot.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -32,7 +33,12 @@ public class ProductService {
     }
 
     /*** POST ***/
-    public Product create(Product product) {
+    @Transactional
+    public Product create(CreateProductRequest request) {
+        Product product = new Product();
+        product.setName(request.name());
+        product.setPrice(request.price());
+        product.setStock(request.stock());
         return productRepository.save(product);
     }
 
@@ -42,9 +48,10 @@ public class ProductService {
     }
 
     public void deleteProductById(Long id) {
-        if (!productRepository.existsById(id)) {
+        try {
+            productRepository.deleteById(id);
+        }  catch (ProductNotFoundException e) {
             throw new ProductNotFoundException(id);
         }
-        productRepository.deleteById(id);
     }
 }
