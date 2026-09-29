@@ -49,5 +49,9 @@ public class ClientService {
         return ClientResponse.from(clientRepository.save(client));
     }
 
-
+    /*** DELETE ***/
+    @Transactional
+    public void deleteAllClients(){
+        clientRepository.deleteAll();
+    }
 }

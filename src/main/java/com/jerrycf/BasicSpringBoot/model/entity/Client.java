@@ -1,8 +1,9 @@
 package com.jerrycf.BasicSpringBoot.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -30,7 +31,8 @@ public class Client {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @JsonIgnore
+    @NotBlank
+    @Min(value = 4, message = "La contraseña debe ser al menos 4 caracteres")
     private String password;
 
     @NotNull

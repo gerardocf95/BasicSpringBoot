@@ -5,7 +5,6 @@ import com.jerrycf.BasicSpringBoot.model.DTOs.ClientResponse;
 import com.jerrycf.BasicSpringBoot.service.ClientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -36,5 +35,12 @@ public class ClientController {
     public ResponseEntity<ClientResponse> createClient(@Valid @RequestBody CreateClientRequest request) {
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").build().toUri();
         return ResponseEntity.created(location).body(clientService.createClient(request));
+    }
+
+    /*** POST ***/
+    @DeleteMapping("/all")
+    public ResponseEntity<Void> deleteAllClients() {
+        clientService.deleteAllClients();
+        return ResponseEntity.noContent().build();
     }
 }
