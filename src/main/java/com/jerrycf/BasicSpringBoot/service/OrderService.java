@@ -44,9 +44,11 @@ public class OrderService {
     @Transactional
     public OrderResponse createOrder(CreateOrderRequest order) {
         Order newOrder = new Order();
-        newOrder.setClientId(order.clientId());
-        newOrder.setDetails(order.details().isEmpty() ? "No details" : order.details());
-        double totalPrice = 0.0;
+        newOrder.setClient(clientRepository.findById(order.clientId())
+                .orElseThrow(() ->new ResourceNotFoundException("Client with id: " + order.clientId() + " not found.")));
+
+        newOrder.setDetails(order.details() == null || order.details().isBlank() ? "No details" : order.details());
+        BigDecimal totalPrice = BigDecimal.ZERO;
 
         for (OrderItemRequest item: order.orderItems()){
             if (productRepository.existsById(item.productId())){
