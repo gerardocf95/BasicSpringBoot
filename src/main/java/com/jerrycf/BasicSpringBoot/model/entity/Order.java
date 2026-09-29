@@ -2,6 +2,7 @@ package com.jerrycf.BasicSpringBoot.model.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,7 +29,7 @@ public class Order {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "client_id")
-    @NotEmpty(message = "ClientId is required")
+    @NotNull(message = "ClientId is required")
     private Client client;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL,  orphanRemoval = true)

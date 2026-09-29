@@ -33,13 +33,13 @@ public class OrderService {
     /*** GET ***/
     @Transactional(readOnly = true)
     public List<OrderResponse> getOrders(){
-        return orderRepository.findAll().stream()
+        return orderRepository.findAllWithItems().stream()
                 .map(OrderResponse::from)
                 .toList();
     }
 
     public OrderResponse getOrderById(Long id) {
-        return OrderResponse.from(orderRepository.findById(id)
+        return OrderResponse.from(orderRepository.findByIdWithItems(id)
                 .orElseThrow(() -> new OrderNotFoundException(id)));
     }
 

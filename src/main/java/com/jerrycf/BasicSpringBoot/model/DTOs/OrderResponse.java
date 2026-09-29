@@ -10,7 +10,8 @@ import java.util.List;
 public record OrderResponse(
 
         Long id,
-        Client client,
+        Long clientId,
+        String clientName,
         List<OrderItemResponse> orderItems,
         BigDecimal totalPrice,
         String details,
@@ -18,12 +19,13 @@ public record OrderResponse(
 ) {
     public static OrderResponse from(Order order) {
         return new OrderResponse(
-            order.getId(),
-            order.getClient(),
-            order.getOrderItems().stream().map(OrderItemResponse::from).toList(),
-            order.getTotalPrice(),
-            order.getDetails(),
-            order.getCreatedAt()
+                order.getId(),
+                order.getClient().getId(),
+                order.getClient().getName(),
+                order.getOrderItems().stream().map(OrderItemResponse::from).toList(),
+                order.getTotalPrice(),
+                order.getDetails(),
+                order.getCreatedAt()
         );
     }
 }
