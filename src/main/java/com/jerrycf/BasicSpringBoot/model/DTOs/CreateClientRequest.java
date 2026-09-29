@@ -1,6 +1,6 @@
 package com.jerrycf.BasicSpringBoot.model.DTOs;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -14,7 +14,7 @@ public record CreateClientRequest(
         @Email(message = "Email not valid")
         String email,
 
-        @JsonIgnore
+        @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
         String password,
 
         @NotNull

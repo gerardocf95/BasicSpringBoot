@@ -44,6 +44,7 @@ public class ClientService {
         // TODO hash password
         client.setPassword(request.password());
         client.setName(request.name());
+        client.setAge(request.age());
 
         return ClientResponse.from(clientRepository.save(client));
     }
