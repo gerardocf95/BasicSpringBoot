@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class ProductController {
     }
 
     @GetMapping("/cheap")
-    public ResponseEntity<List<Product>> findProductsWithPriceLimit(@RequestParam Double limit) {
+    public ResponseEntity<List<Product>> findProductsWithPriceLimit(@RequestParam BigDecimal limit) {
         return ResponseEntity.ok(productService.listCheaper(limit));
     }
 
