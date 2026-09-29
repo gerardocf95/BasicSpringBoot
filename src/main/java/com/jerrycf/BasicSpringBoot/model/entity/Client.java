@@ -1,6 +1,8 @@
 package com.jerrycf.BasicSpringBoot.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -24,10 +26,12 @@ public class Client {
     private String name;
 
     @NotBlank(message = "Email is required")
+    @Email(message = "Email not valid")
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @NotBlank(message = "Password is required")
-    private String hashPassword;
+    @JsonIgnore
+    private String password;
 
     @NotNull
     private Integer age;

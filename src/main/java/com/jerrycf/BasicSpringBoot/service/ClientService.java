@@ -3,11 +3,13 @@ package com.jerrycf.BasicSpringBoot.service;
 
 import com.jerrycf.BasicSpringBoot.errors.EmailAlreadyRegisteredException;
 import com.jerrycf.BasicSpringBoot.errors.ResourceNotFoundException;
+import com.jerrycf.BasicSpringBoot.model.DTOs.CreateClientRequest;
 import com.jerrycf.BasicSpringBoot.model.DTOs.ClientResponse;
 import com.jerrycf.BasicSpringBoot.model.entity.Client;
 import com.jerrycf.BasicSpringBoot.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,8 +21,10 @@ public class ClientService {
 
     /*** GET ***/
 
-    public List<Client> getClients(){
-        return clientRepository.findAll();
+    public List<ClientResponse> getClients(){
+        return clientRepository.findAll().stream()
+                .map(ClientResponse::from)
+                .toList();
     }
 
     public ClientResponse getClientById(Long id) {
@@ -29,12 +33,19 @@ public class ClientService {
     }
 
     /*** POST ***/
-    public ClientResponse createClient(Client request){
-        if (clientRepository.findClientByEmail(request.getEmail()) != null){
-            throw new EmailAlreadyRegisteredException("Client with email " + request.getEmail() + " is already registered");
+    @Transactional
+    public ClientResponse createClient(CreateClientRequest request){
+        if (clientRepository.findClientByEmail(request.email()) != null){
+            throw new EmailAlreadyRegisteredException("Client with email " + request.email() + " is already registered");
         }
 
-        return ClientResponse.from(clientRepository.save(request));
+        Client client = new Client();
+        client.setEmail(request.email());
+        // TODO hash password
+        client.setPassword(request.password());
+        client.setName(request.name());
+
+        return ClientResponse.from(clientRepository.save(client));
     }
 
 

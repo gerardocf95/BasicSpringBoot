@@ -1,14 +1,16 @@
 package com.jerrycf.BasicSpringBoot.controller;
 
+import com.jerrycf.BasicSpringBoot.model.DTOs.CreateClientRequest;
 import com.jerrycf.BasicSpringBoot.model.DTOs.ClientResponse;
-import com.jerrycf.BasicSpringBoot.model.entity.Client;
 import com.jerrycf.BasicSpringBoot.service.ClientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -20,7 +22,7 @@ public class ClientController {
 
     /*** GET ***/
     @GetMapping
-    public ResponseEntity<List<Client>> getClients() {
+    public ResponseEntity<List<ClientResponse>> getClients() {
         return ResponseEntity.ok(clientService.getClients());
     }
 
@@ -31,7 +33,8 @@ public class ClientController {
 
     /*** POST ***/
     @PostMapping
-    public ResponseEntity<ClientResponse> createClient(@Valid @RequestBody Client client) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(clientService.createClient(client));
+    public ResponseEntity<ClientResponse> createClient(@Valid @RequestBody CreateClientRequest request) {
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").build().toUri();
+        return ResponseEntity.created(location).body(clientService.createClient(request));
     }
 }
