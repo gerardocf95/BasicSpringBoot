@@ -9,7 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RequestMapping("/orders")
@@ -34,7 +36,8 @@ public class OrderController {
     /*** POST ***/
     @PostMapping
     public ResponseEntity<OrderResponse> createNewOrder(@Valid @RequestBody CreateOrderRequest order){
-        return ResponseEntity.status(HttpStatus.CREATED).body(orderService.createOrder(order));
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").build().toUri();
+        return ResponseEntity.created(location).body(orderService.createOrder(order));
     }
 
     /*** DELETE ***/
