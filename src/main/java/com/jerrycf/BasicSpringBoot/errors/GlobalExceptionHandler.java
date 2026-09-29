@@ -1,5 +1,6 @@
 package com.jerrycf.BasicSpringBoot.errors;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.validation.FieldError;
@@ -13,15 +14,16 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(ProductNotFoundException.class)
-    public ProblemDetail handleProductNotFound(ProductNotFoundException ex) {
-        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
-                HttpStatus.NOT_FOUND,
-                ex.getMessage());
-        problem.setTitle("Product not found");
 
+    /*@ExceptionHandler(Exception.class)
+    public ProblemDetail handleException(Exception ex){
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                "An unexpected error has ocurred"
+        );
+        problem.setTitle("Unexpected error ocurred");
         return problem;
-    }
+    }*/
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ProblemDetail handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
@@ -41,7 +43,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NotEnoughStockException.class)
     public ProblemDetail handleNotEnoughStock(NotEnoughStockException ex) {
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(
-                HttpStatus.INTERNAL_SERVER_ERROR,
+                HttpStatus.CONFLICT,
                 ex.getMessage()
         );
         problem.setTitle("Not enough stock");
@@ -68,14 +70,15 @@ public class GlobalExceptionHandler {
         return problem;
     }
 
-
-    @ExceptionHandler(OrderNotFoundException.class)
-    public ProblemDetail handleOrderNotFound(OrderNotFoundException ex) {
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ProblemDetail handleDataIntegrityViolation(DataIntegrityViolationException ex) {
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(
-                HttpStatus.NOT_FOUND,
+                HttpStatus.CONFLICT,
                 ex.getMessage()
         );
-        problem.setTitle("Order not found");
+        problem.setTitle("Data Integrity Violation");
         return problem;
     }
+
+
 }
