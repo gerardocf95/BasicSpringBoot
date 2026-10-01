@@ -14,11 +14,9 @@ import com.jerrycf.BasicSpringBoot.repository.ClientRepository;
 import com.jerrycf.BasicSpringBoot.repository.OrderRepository;
 import com.jerrycf.BasicSpringBoot.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.query.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.print.Pageable;
 import java.math.BigDecimal;
 import java.util.List;
 
