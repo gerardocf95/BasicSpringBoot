@@ -74,9 +74,10 @@ public class GlobalExceptionHandler {
     public ProblemDetail handleDataIntegrityViolation(DataIntegrityViolationException ex) {
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(
                 HttpStatus.CONFLICT,
-                ex.getMessage()
+                "Data integrity violation"
         );
         problem.setTitle("Data Integrity Violation");
+        problem.setProperty("problem", ex.getCause().getMessage());
         return problem;
     }
 
