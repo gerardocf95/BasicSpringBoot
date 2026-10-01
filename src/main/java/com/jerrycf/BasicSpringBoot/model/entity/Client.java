@@ -1,5 +1,6 @@
 package com.jerrycf.BasicSpringBoot.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -27,6 +28,7 @@ public class Client {
 
     @NotBlank
     @Size(min = 4, message = "La contraseña debe ser al menos 4 caracteres")
+    @JsonIgnore
     private String password;
 
     @NotNull

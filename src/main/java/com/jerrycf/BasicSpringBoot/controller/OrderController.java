@@ -2,11 +2,9 @@ package com.jerrycf.BasicSpringBoot.controller;
 
 import com.jerrycf.BasicSpringBoot.model.DTOs.CreateOrderRequest;
 import com.jerrycf.BasicSpringBoot.model.DTOs.OrderResponse;
-import com.jerrycf.BasicSpringBoot.model.entity.Order;
 import com.jerrycf.BasicSpringBoot.service.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;

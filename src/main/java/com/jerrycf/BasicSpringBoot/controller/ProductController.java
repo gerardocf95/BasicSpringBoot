@@ -1,13 +1,10 @@
 package com.jerrycf.BasicSpringBoot.controller;
 import com.jerrycf.BasicSpringBoot.model.DTOs.CreateProductRequest;
 import com.jerrycf.BasicSpringBoot.model.DTOs.ProductResponse;
-import com.jerrycf.BasicSpringBoot.model.entity.Product;
 import com.jerrycf.BasicSpringBoot.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -40,7 +37,6 @@ public class ProductController {
 
     /*** POST ***/
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<ProductResponse> save(@Valid @RequestBody CreateProductRequest product) {
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand().toUri();
         return ResponseEntity.created(location).body(productService.create(product));
@@ -49,14 +45,12 @@ public class ProductController {
 
     /*** DELETE ***/
     @DeleteMapping("/all")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteAllProducts() {
         productService.deleteAllProducts();
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteProductById(@PathVariable Long id) {
         productService.deleteProductById(id);
         return ResponseEntity.noContent().build();
