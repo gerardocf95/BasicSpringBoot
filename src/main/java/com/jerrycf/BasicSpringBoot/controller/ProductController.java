@@ -41,7 +41,7 @@ public class ProductController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Product> save(@Valid @RequestBody CreateProductRequest product) {
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").build().toUri();
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand().toUri();
         return ResponseEntity.created(location).body(productService.create(product));
     }
 
