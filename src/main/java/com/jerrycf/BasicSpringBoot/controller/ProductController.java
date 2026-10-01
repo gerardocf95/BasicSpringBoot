@@ -49,7 +49,6 @@ public class ProductController {
     /*** DELETE ***/
     @DeleteMapping("/all")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @Transactional
     public ResponseEntity<Void> deleteAllProducts() {
         productService.deleteAllProducts();
         return ResponseEntity.noContent().build();
@@ -57,7 +56,6 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @Transactional
     public ResponseEntity<Void> deleteProductById(@PathVariable Long id) {
         productService.deleteProductById(id);
         return ResponseEntity.noContent().build();

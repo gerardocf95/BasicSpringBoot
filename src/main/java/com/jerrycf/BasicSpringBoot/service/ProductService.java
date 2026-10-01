@@ -44,10 +44,12 @@ public class ProductService {
     }
 
     /*** DELETE ***/
+    @Transactional
     public void deleteAllProducts() {
         productRepository.deleteAll();
     }
 
+    @Transactional
     public void deleteProductById(Long id) {
         if (!productRepository.existsById(id)) {
             throw new ProductNotFoundException(id);
