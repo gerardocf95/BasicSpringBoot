@@ -20,6 +20,7 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     /*** GET ***/
+    @Transactional(readOnly = true)
     public List<ProductResponse> listAllProducts(){
 
         return productRepository.findAll().stream()
@@ -27,12 +28,14 @@ public class ProductService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public List<ProductResponse> listCheaper(BigDecimal limit) {
         return productRepository.findByPriceLessThan(limit).stream()
                 .map(ProductResponse::from)
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public ProductResponse findById(Long id) {
         return productRepository.findById(id).map(ProductResponse::from)
                 .orElseThrow(() -> new ProductNotFoundException(id));

@@ -21,12 +21,14 @@ public class ClientService {
 
     /*** GET ***/
 
+    @Transactional(readOnly = true)
     public List<ClientResponse> getClients(){
         return clientRepository.findAll().stream()
                 .map(ClientResponse::from)
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public ClientResponse getClientById(Long id) {
         return clientRepository.findById(id).map(ClientResponse::from)
                 .orElseThrow(() -> new ResourceNotFoundException("Client with id " + id + " not found"));
