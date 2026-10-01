@@ -3,6 +3,7 @@ package com.jerrycf.BasicSpringBoot.service;
 
 import com.jerrycf.BasicSpringBoot.errors.ProductNotFoundException;
 import com.jerrycf.BasicSpringBoot.model.DTOs.CreateProductRequest;
+import com.jerrycf.BasicSpringBoot.model.DTOs.ProductResponse;
 import com.jerrycf.BasicSpringBoot.model.entity.Product;
 import com.jerrycf.BasicSpringBoot.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,28 +20,32 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     /*** GET ***/
-    public List<Product> listAllProducts(){
+    public List<ProductResponse> listAllProducts(){
 
-        return productRepository.findAll();
+        return productRepository.findAll().stream()
+                .map(ProductResponse::from)
+                .toList();
     }
 
-    public List<Product> listCheaper(BigDecimal limit) {
-        return productRepository.findByPriceLessThan(limit);
+    public List<ProductResponse> listCheaper(BigDecimal limit) {
+        return productRepository.findByPriceLessThan(limit).stream()
+                .map(ProductResponse::from)
+                .toList();
     }
 
-    public Product findById(Long id) {
-        return productRepository.findById(id)
+    public ProductResponse findById(Long id) {
+        return productRepository.findById(id).map(ProductResponse::from)
                 .orElseThrow(() -> new ProductNotFoundException(id));
     }
 
     /*** POST ***/
     @Transactional
-    public Product create(CreateProductRequest request) {
+    public ProductResponse create(CreateProductRequest request) {
         Product product = new Product();
         product.setName(request.name());
         product.setPrice(request.price());
         product.setStock(request.stock());
-        return productRepository.save(product);
+        return ProductResponse.from(productRepository.save(product));
     }
 
     /*** DELETE ***/

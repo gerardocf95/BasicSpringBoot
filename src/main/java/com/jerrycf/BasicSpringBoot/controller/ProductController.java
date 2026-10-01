@@ -1,5 +1,6 @@
 package com.jerrycf.BasicSpringBoot.controller;
 import com.jerrycf.BasicSpringBoot.model.DTOs.CreateProductRequest;
+import com.jerrycf.BasicSpringBoot.model.DTOs.ProductResponse;
 import com.jerrycf.BasicSpringBoot.model.entity.Product;
 import com.jerrycf.BasicSpringBoot.service.ProductService;
 import jakarta.validation.Valid;
@@ -23,24 +24,24 @@ public class ProductController {
 
     /*** GET ***/
     @GetMapping
-    public ResponseEntity<List<Product>> findAllProducts(){
+    public ResponseEntity<List<ProductResponse>> findAllProducts(){
         return ResponseEntity.ok(productService.listAllProducts());
     }
 
     @GetMapping("/cheap")
-    public ResponseEntity<List<Product>> findProductsWithPriceLimit(@RequestParam BigDecimal limit) {
+    public ResponseEntity<List<ProductResponse>> findProductsWithPriceLimit(@RequestParam BigDecimal limit) {
         return ResponseEntity.ok(productService.listCheaper(limit));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> findProductById(@PathVariable Long id) {
+    public ResponseEntity<ProductResponse> findProductById(@PathVariable Long id) {
         return ResponseEntity.ok(productService.findById(id));
     }
 
     /*** POST ***/
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Product> save(@Valid @RequestBody CreateProductRequest product) {
+    public ResponseEntity<ProductResponse> save(@Valid @RequestBody CreateProductRequest product) {
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand().toUri();
         return ResponseEntity.created(location).body(productService.create(product));
     }
