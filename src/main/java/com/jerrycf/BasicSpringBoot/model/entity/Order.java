@@ -33,10 +33,8 @@ public class Order {
     private Client client;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL,  orphanRemoval = true)
-    @NotEmpty(message = "Items required")
     private List<OrderItem> orderItems = new ArrayList<>();
 
-    @Positive
     private BigDecimal totalPrice;
 
     private String details;
