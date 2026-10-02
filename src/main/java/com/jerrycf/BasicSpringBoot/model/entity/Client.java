@@ -20,17 +20,17 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
 
     @Email(message = "Email not valid")
     @Column(nullable = false, unique = true)
     private String email;
 
-    @NotBlank
     @Size(min = 4, message = "La contraseña debe ser al menos 4 caracteres")
     @JsonIgnore
     private String password;
 
-    @NotNull
+    @Column(nullable = false)
     private Integer age;
 }

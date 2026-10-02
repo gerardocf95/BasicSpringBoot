@@ -1,7 +1,6 @@
 package com.jerrycf.BasicSpringBoot.model.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,10 +26,10 @@ public class OrderItem {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @Positive
+    @Column(nullable = false)
     private Integer quantity;
 
-    @Positive
+    @Column(nullable = false, length = 255)
     private BigDecimal unitPrice;
 
 

@@ -1,9 +1,5 @@
 package com.jerrycf.BasicSpringBoot.model.entity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -19,13 +15,11 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @NotBlank(message = "Name is required")
+    @Column(nullable = false)
     private String name;
 
-    @NotNull(message = "Price is required")
-    @Positive(message = "Price must be greater than zero")
+    @Column(nullable = false)
     private BigDecimal price;
 
-    @PositiveOrZero(message = "Stock for this product must be greater or equal to zero")
     private Integer stock;
 }

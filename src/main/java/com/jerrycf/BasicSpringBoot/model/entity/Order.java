@@ -1,9 +1,6 @@
 package com.jerrycf.BasicSpringBoot.model.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,14 +26,15 @@ public class Order {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "client_id")
-    @NotNull(message = "ClientId is required")
     private Client client;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL,  orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
 
+    @Column(nullable = false, length = 255)
     private BigDecimal totalPrice;
 
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String details;
 
     @CreationTimestamp

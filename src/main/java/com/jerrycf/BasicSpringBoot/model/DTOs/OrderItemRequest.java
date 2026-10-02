@@ -8,7 +8,7 @@ public record OrderItemRequest(
         Long productId,
 
         @NotNull
-        @Positive
+        @Positive(message = "Quantity is required")
         Integer quantity
 ) {
 }

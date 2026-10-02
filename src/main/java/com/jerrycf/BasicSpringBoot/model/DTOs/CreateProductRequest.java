@@ -13,7 +13,7 @@ public record CreateProductRequest(
         String name,
 
         @NotNull
-        @Positive(message = "Price must be positive or zero")
+        @Positive(message = "Price must be positive")
         BigDecimal price,
 
         @NotNull
