@@ -1,32 +1,46 @@
 package com.jerrycf.BasicSpringBoot.errors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ProblemDetail;
+import org.springframework.http.*;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+
 
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
 
-    /*@ExceptionHandler(Exception.class)
-    public ProblemDetail handleException(Exception ex){
+    @ExceptionHandler(Exception.class)
+    public ProblemDetail handleUnexpected(Exception ex){
+        String errorId = UUID.randomUUID().toString();
+        log.error("Unexpected error ocurred: [{}]", errorId,ex);
+
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(
                 HttpStatus.INTERNAL_SERVER_ERROR,
-                "An unexpected error has ocurred"
+                "An unexpected error ocurred"
         );
-        problem.setTitle("Unexpected error ocurred");
+        problem.setTitle("Internal Server Error");
+        problem.setProperty("errorId", errorId);
         return problem;
-    }*/
+    }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ProblemDetail handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
+    @Override
+    public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+                                                               HttpHeaders headers,
+                                                               HttpStatusCode status,
+                                                               WebRequest request) {
         Map<String, String> errors = new HashMap<>();
         for (FieldError fieldError: ex.getFieldErrors()) {
             errors.put(fieldError.getField(), fieldError.getDefaultMessage());
@@ -37,7 +51,7 @@ public class GlobalExceptionHandler {
         );
         problem.setTitle("Invalid method arguments");
         problem.setProperty("errors", errors);
-        return problem;
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).headers(headers).body(problem);
     }
 
     @ExceptionHandler(NotEnoughStockException.class)
@@ -72,12 +86,15 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ProblemDetail handleDataIntegrityViolation(DataIntegrityViolationException ex) {
+        String errorId = UUID.randomUUID().toString();
+        log.warn("Data integrity violation [{}]", errorId, ex);
+
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(
                 HttpStatus.CONFLICT,
-                "Data integrity violation"
+                "The request conflicts with existing data. Check unique or required fields."
         );
         problem.setTitle("Data Integrity Violation");
-        problem.setProperty("problem", ex.getCause().getMessage());
+        problem.setProperty("errorId", errorId);
         return problem;
     }
 

@@ -33,9 +33,10 @@ public class OrderController {
 
     /*** POST ***/
     @PostMapping
-    public ResponseEntity<OrderResponse> createNewOrder(@Valid @RequestBody CreateOrderRequest order){
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").build().toUri();
-        return ResponseEntity.created(location).body(orderService.createOrder(order));
+    public ResponseEntity<OrderResponse> save(@Valid @RequestBody CreateOrderRequest createOrderRequest){
+        OrderResponse response = orderService.createOrder(createOrderRequest);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(response.id()).toUri();
+        return ResponseEntity.created(location).body(response);
     }
 
     /*** DELETE ***/

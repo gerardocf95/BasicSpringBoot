@@ -1,6 +1,5 @@
 package com.jerrycf.BasicSpringBoot.model.DTOs;
 
-import com.jerrycf.BasicSpringBoot.model.entity.Client;
 import com.jerrycf.BasicSpringBoot.model.entity.Order;
 
 import java.math.BigDecimal;

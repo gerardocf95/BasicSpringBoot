@@ -32,9 +32,10 @@ public class ClientController {
 
     /*** POST ***/
     @PostMapping
-    public ResponseEntity<ClientResponse> createClient(@Valid @RequestBody CreateClientRequest request) {
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").build().toUri();
-        return ResponseEntity.created(location).body(clientService.createClient(request));
+    public ResponseEntity<ClientResponse> save(@Valid @RequestBody CreateClientRequest createClientRequest) {
+        ClientResponse response = clientService.createClient(createClientRequest);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(response.id()).toUri();
+        return ResponseEntity.created(location).body(response);
     }
 
     /*** POST ***/
