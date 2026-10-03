@@ -29,6 +29,7 @@ public class Client {
 
     @Size(min = 4, message = "La contraseña debe ser al menos 4 caracteres")
     @JsonIgnore
+    @Column(nullable = false)
     private String password;
 
     @Column(nullable = false)

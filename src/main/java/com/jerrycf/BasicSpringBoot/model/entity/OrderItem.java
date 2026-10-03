@@ -29,7 +29,7 @@ public class OrderItem {
     @Column(nullable = false)
     private Integer quantity;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false, precision = 19, scale = 2)
     private BigDecimal unitPrice;
 
 

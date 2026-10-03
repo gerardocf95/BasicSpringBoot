@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 @Service
@@ -46,7 +47,7 @@ public class ProductService {
     public ProductResponse create(CreateProductRequest request) {
         Product product = new Product();
         product.setName(request.name());
-        product.setPrice(request.price());
+        product.setPrice(request.price().setScale(2, RoundingMode.HALF_UP));
         product.setStock(request.stock());
         return ProductResponse.from(productRepository.save(product));
     }
