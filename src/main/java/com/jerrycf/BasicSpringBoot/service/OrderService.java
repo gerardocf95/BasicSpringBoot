@@ -71,8 +71,9 @@ public class OrderService {
         for (OrderItemRequest item: order.orderItems()){
             Product currentProduct = productRepository.findById(item.productId())
                     .orElseThrow(() -> new ProductNotFoundException(item.productId()));
-            if (item.quantity() > currentProduct.getStock()){
-                throw new NotEnoughStockException("Not enough stock for product: " + currentProduct.getName());
+            int updated = productRepository.decrementStock(item.productId(), item.quantity());
+            if (updated == 0) {
+                throw new NotEnoughStockException("Not enough stock for " + currentProduct.getId() + ": " + currentProduct.getName());
             }
 
             totalPrice = totalPrice.add(currentProduct.getPrice().multiply(BigDecimal.valueOf(item.quantity())));
