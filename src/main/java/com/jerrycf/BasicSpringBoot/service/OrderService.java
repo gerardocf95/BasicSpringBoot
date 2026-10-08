@@ -14,6 +14,8 @@ import com.jerrycf.BasicSpringBoot.repository.ClientRepository;
 import com.jerrycf.BasicSpringBoot.repository.OrderRepository;
 import com.jerrycf.BasicSpringBoot.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.resilience.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +45,15 @@ public class OrderService {
     }
 
     /*** POST ***/
+
+    @Retryable(
+            includes = OptimisticLockingFailureException.class,
+            maxRetries = 3,
+            delay = 50,
+            multiplier = 2,
+            jitter = 20,
+            maxDelay = 500
+    )
     @Transactional
     public OrderResponse createOrder(CreateOrderRequest order) {
         Order newOrder = new Order();

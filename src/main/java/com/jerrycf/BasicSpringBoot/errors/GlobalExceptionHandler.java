@@ -3,6 +3,7 @@ package com.jerrycf.BasicSpringBoot.errors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.*;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -95,6 +96,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         );
         problem.setTitle("Data Integrity Violation");
         problem.setProperty("errorId", errorId);
+        return problem;
+    }
+
+    @ExceptionHandler(OptimisticLockingFailureException.class)
+    public ProblemDetail handleOptimisticLockingFailure(OptimisticLockingFailureException ex) {
+        log.warn("Optimistic lock exhausted after retries", ex);
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
+                HttpStatus.CONFLICT,
+                "The resource was modified by another request. Please try again."
+        );
+        problem.setTitle("Concurrent modification");
         return problem;
     }
 

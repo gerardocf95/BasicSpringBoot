@@ -23,4 +23,8 @@ public class Product {
 
     @Column(nullable = false)
     private Integer stock;
+
+    // For Optimistic locking
+    @Version
+    private Long version;
 }
