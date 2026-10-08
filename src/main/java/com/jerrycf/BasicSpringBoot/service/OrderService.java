@@ -51,14 +51,14 @@ public class OrderService {
      * @param order
      * @return OrderResponse
      */
-    /*@Retryable(
+    @Retryable(
             includes = OptimisticLockingFailureException.class,
-            maxRetries = 3,
+            maxRetries = 2,
             delay = 50,
             multiplier = 2,
             jitter = 20,
             maxDelay = 500
-    )*/
+    )
     @Transactional
     public OrderResponse createOrder(CreateOrderRequest order) {
         Order newOrder = new Order();
