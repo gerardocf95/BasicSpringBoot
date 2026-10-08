@@ -45,7 +45,12 @@ public class OrderService {
     }
 
     /*** POST ***/
-
+    /***
+     * Retryable and tests on OrderServiceConcurrencyTest.java
+     *
+     * @param order
+     * @return OrderResponse
+     */
     @Retryable(
             includes = OptimisticLockingFailureException.class,
             maxRetries = 3,

@@ -1,6 +1,5 @@
 package com.jerrycf.BasicSpringBoot.controller;
 
-import com.jerrycf.BasicSpringBoot.facade.OrderFacade;
 import com.jerrycf.BasicSpringBoot.model.DTOs.CreateOrderRequest;
 import com.jerrycf.BasicSpringBoot.model.DTOs.OrderResponse;
 import com.jerrycf.BasicSpringBoot.service.OrderService;
@@ -19,7 +18,6 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
-    private final OrderFacade orderFacade;
 
     /*** GET ***/
     @GetMapping
@@ -36,7 +34,7 @@ public class OrderController {
     /*** POST ***/
     @PostMapping
     public ResponseEntity<OrderResponse> save(@Valid @RequestBody CreateOrderRequest createOrderRequest){
-        OrderResponse response = orderFacade.createOrder(createOrderRequest);
+        OrderResponse response = orderService.createOrder(createOrderRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(response.id()).toUri();
         return ResponseEntity.created(location).body(response);
     }
