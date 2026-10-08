@@ -34,7 +34,7 @@ public class Order {
     @Column(nullable = false, precision = 19, scale = 2)
     private BigDecimal totalPrice;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = false)
     private String details;
 
     @CreationTimestamp

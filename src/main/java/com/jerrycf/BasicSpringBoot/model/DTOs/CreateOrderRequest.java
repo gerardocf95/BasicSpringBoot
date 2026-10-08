@@ -4,6 +4,7 @@ import jakarta.annotation.Nullable;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ public record CreateOrderRequest(
         Long clientId,
 
         @Nullable
+        @Size(max = 500)
         String details,
 
         @NotEmpty
