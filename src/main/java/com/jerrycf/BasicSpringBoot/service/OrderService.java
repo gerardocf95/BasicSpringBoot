@@ -51,14 +51,14 @@ public class OrderService {
      * @param order
      * @return OrderResponse
      */
-    @Retryable(
+    /*@Retryable(
             includes = OptimisticLockingFailureException.class,
             maxRetries = 3,
             delay = 50,
             multiplier = 2,
             jitter = 20,
             maxDelay = 500
-    )
+    )*/
     @Transactional
     public OrderResponse createOrder(CreateOrderRequest order) {
         Order newOrder = new Order();
@@ -77,7 +77,7 @@ public class OrderService {
             }
 
             totalPrice = totalPrice.add(currentProduct.getPrice().multiply(BigDecimal.valueOf(item.quantity())));
-            currentProduct.setStock(currentProduct.getStock() - item.quantity());
+
             OrderItem newOrderItem = new OrderItem();
             newOrderItem.setOrder(newOrder);
             newOrderItem.setProduct(currentProduct);
